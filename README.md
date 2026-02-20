@@ -153,5 +153,3 @@ HOG Confusion Matrix:
 ✔ Git-based version control integrated  
 
 ---
-
-test commit line
