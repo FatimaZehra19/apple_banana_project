@@ -1,208 +1,111 @@
-# 🍎🍌 Apple vs Banana Image Classification – Classical Computer Vision Mini Project
+# 🍎 Apple vs Banana Image Classification  
+**Classical Computer Vision → Deep Learning | Robustness Evaluation**
 
-This project demonstrates a structured Computer Vision pipeline using traditional machine learning techniques and feature engineering.
-
----
-
-## 📌 Overview
-
-The objective of this project is to classify images of apples and bananas using:
-
-- Image preprocessing
-- Raw pixel features
-- HOG (Histogram of Oriented Gradients)
-- Logistic Regression classifier
-
-The project also evaluates robustness under controlled perturbations such as Gaussian noise and brightness shifts.
+A structured computer vision project comparing handcrafted feature engineering with neural network–based learning under controlled robustness experiments.
 
 ---
 
-## 🧠 Computer Vision Pipeline
+## 🎯 Objective
 
-1. Load raw images  
-2. Resize with aspect ratio preservation  
-3. Pad images to 128×128  
-4. Convert to grayscale  
-5. Normalize pixel values (0–1)  
-6. Feature Extraction:
-   - Raw Pixel Flattening (16384 features)
-   - HOG Features (8100 features)
-7. Train Logistic Regression model  
-8. Evaluate using Accuracy and Confusion Matrix  
+Develop and compare multiple classification approaches for apple vs banana image recognition, and evaluate robustness under Gaussian noise perturbations.
 
 ---
 
-## 🛠 Tools & Libraries
+## 🛠 Tech Stack
 
 - Python  
 - OpenCV  
 - NumPy  
 - Scikit-learn  
-- Scikit-image  
+- PyTorch  
 
 ---
 
 ## 📊 Dataset
 
-- Apple images: 310  
-- Banana images: 310  
-- Clean background and controlled lighting  
-- Dataset not included in repository (.gitignore)
+- ~620 images (Apple & Banana)  
+- Clean white background  
+- Controlled lighting  
+- Centered objects  
+- Dataset excluded from repository  
 
 ---
 
-# 📈 Week 3 – Feature Engineering Comparison
+## 🔬 Models Implemented
 
-## ✅ Baseline Results (Clean Data)
+### Classical Machine Learning
+- Raw Pixel Features (16384-dim)
+- HOG Features (8100-dim)
+- Logistic Regression
+- Linear SVM
 
-| Method        | Feature Length | Accuracy | Training Time |
-|--------------|---------------|----------|---------------|
-| Raw Pixels   | 16384        | 100%     | ~0.12 sec     |
-| HOG Features | 8100         | 100%     | ~0.16 sec     |
-
-Confusion Matrix (Both Methods):
-[[63 0]
-[ 0 61]]
-
-
-### 🔎 Observations (Baseline)
-
-- Both Raw Pixel and HOG features achieved perfect accuracy.
-- HOG reduced feature dimensionality by ~50% (16384 → 8100).
-- Training time for HOG was slightly higher due to feature computation overhead.
-- The dataset is linearly separable under both representations due to:
-  - Clean background  
-  - Controlled lighting  
-  - Distinct object shapes  
-
-Although accuracy is identical, HOG provides a more structured, edge-based representation compared to raw intensity features.
+### Deep Learning
+- Fully Connected Neural Network (FCNN)  
+  Architecture:  
+  Input (128×128 grayscale) → Flatten → Linear(16384→128) → ReLU → Linear(128→2)  
+  ~2M parameters
 
 ---
 
-# 🔬 Week 3 – Day 4: Robustness Analysis
+## 📈 Performance Summary
 
-To evaluate feature stability, experiments were conducted under:
+### Clean Dataset Accuracy
 
-- Gaussian Noise (Test Data Only)
-- Brightness Shift (Test Data Only)
+| Model | Feature | Accuracy |
+|--------|----------|----------|
+| Logistic | Raw | 100% |
+| Logistic | HOG | 100% |
+| SVM | Raw | 100% |
+| SVM | HOG | 100% |
+| FCNN | Raw Pixels | 100% |
 
-Training was performed on clean data. Only test data was modified.
-
----
-
-## 🌫 Gaussian Noise Experiment
-
-| Method        | Accuracy |
-|--------------|----------|
-| Raw Pixels   | 100%     |
-| HOG Features | 76.6%    |
-
-HOG Confusion Matrix:
-[[63 0]
-[29 32]]
-
-
-### 🔎 Observation
-
-- HOG performance degraded significantly under Gaussian noise.
-- Gradient computation amplifies high-frequency pixel perturbations.
-- Raw pixel representation remained stable due to strong class separability and small noise magnitude.
+The dataset is linearly separable under controlled conditions.
 
 ---
 
-## 🌞 Brightness Shift Experiment
+## 🌫 Gaussian Noise Robustness (Test Only)
 
-| Method        | Accuracy |
-|--------------|----------|
-| Raw Pixels   | 100%     |
-| HOG Features | 100%     |
+FCNN evaluated under increasing Gaussian noise:
 
-### 🔎 Observation
+| Noise Std | Accuracy |
+|------------|----------|
+| 0.0 | 100% |
+| 0.3 | 100% |
+| 0.4 | 97.9% |
+| 0.5 | 80.45% |
 
-- Uniform brightness shifts did not affect classification.
-- HOG is naturally illumination invariant (gradient cancels constant shift).
-- Raw pixels also remained stable due to preserved class separability.
+### Key Findings
 
----
-
-# 🎓 Key Insights
-
-- HOG is robust to illumination changes and contrast scaling.
-- HOG is sensitive to high-frequency pixel noise due to gradient amplification.
-- Raw pixel features perform well on simple, clean datasets.
-- Robustness depends on the type of perturbation applied.
-- Feature engineering has limitations when moving toward real-world variability.
+- HOG degrades significantly under high-frequency noise.
+- Raw pixel models remain stable under small perturbations.
+- FCNN memorizes simple patterns but lacks spatial inductive bias.
+- Performance drops as signal-to-noise ratio decreases.
 
 ---
 
-# 🚀 Future Improvements
+## 🧠 Key Insights
 
-- Evaluate robustness under rotation and scaling.
-- Compare Logistic Regression with SVM.
-- Apply data augmentation techniques.
-- Transition toward CNN-based feature learning.
-- Test on more complex and real-world datasets.
+- Feature representation impacts robustness more than classifier choice.
+- Handcrafted gradients are sensitive to pixel-level noise.
+- Fully connected networks do not preserve spatial structure.
+- Spatially-aware architectures (CNN) are required for real-world generalization.
+
+---
+
+## 🚀 Next Phase
+
+- Implement Convolutional Neural Network (CNN)
+- Compare robustness vs FCNN
+- Introduce data augmentation (translation, rotation)
+- Evaluate generalization on more complex datasets
 
 ---
 
 ## 📌 Project Status
 
-✔ Classical CV pipeline implemented  
-✔ Feature engineering comparison completed  
-✔ Robustness experiments conducted  
-✔ Git-based version control integrated  
-
----
-# 🔬 Week 3 – Day 5: Linear SVM Implementation
-
-## Objective
-Evaluate performance of Linear SVM with:
-
-- Raw Pixel Features
-- HOG Features
-
-Compare against Logistic Regression and analyze robustness under Gaussian noise.
-
----
-
-## ✅ Baseline Results (Clean Data)
-
-| Method        | Feature | Accuracy | Training Time |
-|--------------|---------|----------|---------------|
-| Logistic     | Raw     | 100%     | ~0.15 sec     |
-| Logistic     | HOG     | 100%     | ~0.19 sec     |
-| Linear SVM   | Raw     | 100%     | ~0.27 sec     |
-| Linear SVM   | HOG     | 100%     | ~0.26 sec     |
-
-Observation:
-- All models achieved perfect accuracy on clean dataset.
-- HOG reduced dimensionality compared to raw pixels.
-- SVM training time was higher than Logistic Regression.
-
----
-
-## 🌫 Gaussian Noise Robustness (Test Data Only)
-
-| Method        | Accuracy |
-|--------------|----------|
-| Logistic + Raw | 100% |
-| Logistic + HOG | 73% |
-| SVM + Raw      | 100% |
-| SVM + HOG      | 50% |
-
-Observation:
-- Raw pixel representation remained stable under small Gaussian noise.
-- HOG features degraded significantly under noise due to gradient sensitivity.
-- SVM combined with HOG showed complete class collapse (predicting one class), indicating strong sensitivity to feature distribution shift.
-- Robustness is strongly dependent on feature representation rather than classifier alone.
-
----
-
-## 🎓 Key Insight
-
-- Margin-based classifiers (SVM) amplify geometric shifts in feature space.
-- HOG is sensitive to high-frequency pixel perturbations.
-- Feature stability plays a more critical role than classifier selection in controlled datasets.
-- Classical feature engineering has limitations under real-world variability.
-
----
+✔ Classical CV pipeline  
+✔ Feature engineering comparison  
+✔ Logistic vs SVM analysis  
+✔ FCNN implementation  
+✔ Robustness evaluation  
+✔ Modular training & evaluation workflow  
