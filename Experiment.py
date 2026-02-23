@@ -4,6 +4,7 @@ from sklearn.metrics import confusion_matrix , accuracy_score
 from Preprocessing import process_folder, process_single_image
 from Features import extract_raw, extract_hog
 from Train import train_model
+from utils import add_Gaussian_noise as add_noise
 import numpy as np 
 import time
 import os
@@ -67,13 +68,6 @@ print("Confusion matrix:\n", confusion_matrix(y_test, y_pred_hog))
 
 
 # Test on a new noisy image
-def add_noise(image, mean=0, std=0.15):
-    noise = np.random.normal(mean, std, image.shape)
-    noisy_image = image + noise
-    noisy_image = np.clip(noisy_image, 0, 1)  # Ensure pixel values are valid
-    return noisy_image
-
-
 print("\n\n===== NOISY TEST DATA EXPERIMENT =====")
 
 # Add noise ONLY to test images

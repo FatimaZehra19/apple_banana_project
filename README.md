@@ -153,3 +153,56 @@ HOG Confusion Matrix:
 ✔ Git-based version control integrated  
 
 ---
+# 🔬 Week 3 – Day 5: Linear SVM Implementation
+
+## Objective
+Evaluate performance of Linear SVM with:
+
+- Raw Pixel Features
+- HOG Features
+
+Compare against Logistic Regression and analyze robustness under Gaussian noise.
+
+---
+
+## ✅ Baseline Results (Clean Data)
+
+| Method        | Feature | Accuracy | Training Time |
+|--------------|---------|----------|---------------|
+| Logistic     | Raw     | 100%     | ~0.15 sec     |
+| Logistic     | HOG     | 100%     | ~0.19 sec     |
+| Linear SVM   | Raw     | 100%     | ~0.27 sec     |
+| Linear SVM   | HOG     | 100%     | ~0.26 sec     |
+
+Observation:
+- All models achieved perfect accuracy on clean dataset.
+- HOG reduced dimensionality compared to raw pixels.
+- SVM training time was higher than Logistic Regression.
+
+---
+
+## 🌫 Gaussian Noise Robustness (Test Data Only)
+
+| Method        | Accuracy |
+|--------------|----------|
+| Logistic + Raw | 100% |
+| Logistic + HOG | 73% |
+| SVM + Raw      | 100% |
+| SVM + HOG      | 50% |
+
+Observation:
+- Raw pixel representation remained stable under small Gaussian noise.
+- HOG features degraded significantly under noise due to gradient sensitivity.
+- SVM combined with HOG showed complete class collapse (predicting one class), indicating strong sensitivity to feature distribution shift.
+- Robustness is strongly dependent on feature representation rather than classifier alone.
+
+---
+
+## 🎓 Key Insight
+
+- Margin-based classifiers (SVM) amplify geometric shifts in feature space.
+- HOG is sensitive to high-frequency pixel perturbations.
+- Feature stability plays a more critical role than classifier selection in controlled datasets.
+- Classical feature engineering has limitations under real-world variability.
+
+---
