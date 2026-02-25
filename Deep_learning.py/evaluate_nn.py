@@ -102,3 +102,14 @@ for std in noise_levels:
     noisy_accuracy = evaluate_model(noisy_transform)
 
     print(f"Accuracy with Gaussian noise (std={std}): {noisy_accuracy:.2f}%")
+
+# Translation Noise Evaluation
+translation_transform = transforms.Compose([
+                                            transforms.Grayscale(),
+                                            transforms.Resize((128,128)),
+                                            transforms.RandomAffine(degrees=0, translate=(0.3, 0)),  # Random translation
+                                            transforms.ToTensor() 
+                                            ])
+
+translation_accuracy = evaluate_model(translation_transform)
+print(f"Accuracy with translation noise: {translation_accuracy:.2f}%")
