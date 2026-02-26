@@ -4,7 +4,6 @@ import time
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score,confusion_matrix
-from Experiment import X_test_img
 from Preprocessing import process_single_image
 from Features import extract_raw, extract_hog
 from utils import add_gaussian_noise 

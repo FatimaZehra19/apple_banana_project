@@ -1,17 +1,17 @@
 # 🍎 Apple vs Banana Image Classification  
 **Classical Computer Vision → Deep Learning | Robustness & Invariance Study**
 
-A structured computer vision project comparing handcrafted feature engineering and neural networks, with controlled robustness experiments under Gaussian noise and spatial translation.
+A structured computer vision project comparing handcrafted feature engineering and neural networks, including controlled robustness experiments under Gaussian noise and spatial translation.
 
 ---
 
 ## 🎯 Objective
 
-- Compare classical ML and deep learning approaches.
-- Evaluate robustness under:
+- Compare Classical ML and Deep Learning models  
+- Evaluate robustness to:
   - Gaussian noise (intensity corruption)
   - Spatial translation (object shift)
-- Analyze the effect of data augmentation on model invariance.
+- Analyze the impact of data augmentation on invariance
 
 ---
 
@@ -27,10 +27,10 @@ A structured computer vision project comparing handcrafted feature engineering a
 
 ## 📊 Dataset
 
-- ~620 images (Apple & Banana)
-- Clean white background
-- Centered objects
-- Controlled lighting
+- ~620 images (Apple & Banana)  
+- White background, centered objects  
+- Train/Test split used (no data leakage)  
+- Images resized to 128×128 grayscale  
 
 ---
 
@@ -49,89 +49,53 @@ A structured computer vision project comparing handcrafted feature engineering a
 
 ---
 
-# 📈 Clean Data Performance
+# 📈 Unified Results Summary
 
-| Model | Accuracy |
-|--------|----------|
-| Logistic (Raw) | 100% |
-| SVM (Raw) | 100% |
-| FCNN | 100% |
-| CNN | 99.5% |
-
-Dataset is linearly separable under controlled conditions.
-
----
-
-# 🌫 Gaussian Noise Robustness (Test Only)
-
-## FCNN
-
-| Noise Std | Accuracy |
-|------------|----------|
-| 0.1 | 100% |
-| 0.2 | 100% |
-| 0.3 | 100% |
-| 0.4 | 97.7% |
-| 0.5 | 78.2% |
-
-## CNN (No Augmentation)
-
-| Noise Std | Accuracy |
-|------------|----------|
-| 0.1 | 98.4% |
-| 0.2 | 63.9% |
-| 0.3 | 51.7% |
-| ≥0.4 | ~50% |
-
-Observation:
-- CNN edge detectors degrade quickly under high-frequency noise.
-- FCNN is more stable on this simple dataset due to strong global separability.
-
----
-
-# 🔁 Translation Robustness (30% Horizontal Shift)
-
-## FCNN
-Accuracy: **70.92%**
-
-## CNN (No Translation Training)
-Accuracy: **63.17%**
-
-## CNN + Translation Augmentation (Training with 30% Shift)
-Accuracy: **98.22%**
+| Model | Clean | Gaussian Noise (0.5) | 30% Translation | With Augmentation |
+|--------|--------|----------------------|-----------------|-------------------|
+| Logistic (Raw) | 100% | — | — | — |
+| SVM (Raw/HOG) | 100% | — | — | — |
+| FCNN | 100% | 78.2% | 70.92% | — |
+| CNN (No Aug) | 99.5% | ~50% | 63.17% | — |
+| CNN + Translation Aug | — | — | 98.22% | ✔ |
 
 ---
 
 # 🧠 Key Insights
 
-- CNN is not inherently translation-invariant; invariance must be learned.
-- Data augmentation dramatically improves robustness to the specific transformation used during training.
-- Robustness is transformation-specific:
-  - Rotation augmentation → rotation tolerance
-  - Translation augmentation → shift tolerance
-  - Noise augmentation required for noise robustness
-- Architecture advantage depends on dataset complexity.
+- The dataset is linearly separable under clean conditions.
+- FCNN performs strongly on simple, globally separable data.
+- CNN is not inherently translation-invariant — invariance must be learned.
+- High-frequency Gaussian noise significantly impacts CNN without augmentation.
+- Data augmentation dramatically improves robustness to the specific transformation seen during training.
+- Robustness is transformation-specific (noise ≠ translation).
 
 ---
 
 # 🎓 Major Takeaways
 
-- Simple datasets can favor global models (FCNN).
+- Architecture alone does not guarantee robustness.
+- Data augmentation is essential for real-world generalization.
 - CNN advantages emerge under spatial variability.
-- Data augmentation is critical for real-world generalization.
-- Robustness depends on training exposure, not just architecture.
+- Experimental design and proper train/test separation are critical.
 
 ---
 
 ## 🚀 Project Status
 
 ✔ Classical CV pipeline  
+✔ Feature engineering (Raw + HOG)  
 ✔ Logistic vs SVM comparison  
 ✔ FCNN implementation  
 ✔ CNN implementation  
 ✔ Gaussian noise analysis  
 ✔ Translation robustness study  
 ✔ Data augmentation experiments  
-✔ Structured experimental workflow  
+✔ Structured and reproducible workflow  
 
 ---
+
+## 📌 Conclusion
+
+This project demonstrates an end-to-end computer vision workflow — from handcrafted features to deep learning — with structured robustness evaluation and controlled experimentation.
+s
